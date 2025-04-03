@@ -3,7 +3,7 @@ package Main.java;
 import javax.swing.JPanel; // Import the Swing library for GUI components
 import java.awt.*; // Import the AWT library for graphics and layout management
 
-public class GamePanel extends JPanel { // GamePanel class extends JPanel to create a custom panel for the game
+public class GamePanel extends JPanel implements Runnable { // GamePanel class extends JPanel to create a custom panel for the game
 
     //screen settings
     final int originalTileSize = 16; // Original tile size in pixels
@@ -18,24 +18,27 @@ public class GamePanel extends JPanel { // GamePanel class extends JPanel to cre
     Thread gameThread; // Thread for running the game loop
 
 
-    public GamePanel() {
+    public GamePanel() { // Constructor for the GamePanel class
         this.setPreferredSize(new Dimension(screenWidth, screenHeight)); // Set the preferred size of the panel
         this.setBackground(Color.black); // Set the background color of the panel to black
         this.setDoubleBuffered(true); // Enable double buffering for smoother rendering
     }
 
-    public void startGameThread() {
-        gameThread = new Thread(this::startGameThread); // Create a new thread for the game
+    public void startGameThread() { // Method to start the game thread
+        gameThread = new Thread(this); // Create a new thread for the game
+        gameThread.start(); // Start the game thread
 
 
     }
 
+    @Override
     public void run(){ // Run method for the game loop
 
         while (gameThread != null){ // While the game thread is not null
 
 
             System.out.println("Game is running");// Print a message to indicate that the game is running
+            break; // Break the loop after one iteration for testing purposes
         }
     }
 
