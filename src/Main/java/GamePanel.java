@@ -39,7 +39,19 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
 
             System.out.println("Game is running");// Print a message to indicate that the game is running
             break; // Break the loop after one iteration for testing purposes
+
+            // Update info such as character position
+
+            // Draw the screen with the updated information
         }
+    }
+    public void update() { // Method to update the game state
+
+    }
+
+    public void paintComponent(Graphics g) { // Method to paint the components of the panel
+
+
     }
 
 }
