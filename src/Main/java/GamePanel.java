@@ -30,6 +30,13 @@ public class GamePanel extends JPanel { // GamePanel class extends JPanel to cre
 
     }
 
+    public void run(){ // Run method for the game loop
 
+        while (gameThread != null){ // While the game thread is not null
+
+
+            System.out.println("Game is running");// Print a message to indicate that the game is running
+        }
+    }
 
 }
