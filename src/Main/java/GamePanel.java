@@ -15,13 +15,24 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
     final int screenWidth = tileSize * maxScreenCol; // Width of the screen in pixels
     final int screenHeight = tileSize * maxScreenRow; // Height of the screen in pixels
 
+    //FPS
+    int FPS = 60; // Frames per second for the game loop
+
+    KeyHandler KeyH = new KeyHandler(); // Create an instance of the KeyHandler class to handle keyboard input
     Thread gameThread; // Thread for running the game loop
+
+    //set player's position
+    int playerX = 100; // Player's initial X position
+    int playerY = 100; // Player's initial Y position
+    int playerSpeed = 4; // Player's speed in pixels
 
 
     public GamePanel() { // Constructor for the GamePanel class
         this.setPreferredSize(new Dimension(screenWidth, screenHeight)); // Set the preferred size of the panel
         this.setBackground(Color.black); // Set the background color of the panel to black
         this.setDoubleBuffered(true); // Enable double buffering for smoother rendering
+        this.addKeyListener(KeyH); // Add the KeyHandler as a key listener to the panel
+        this.setFocusable(true); // Make the panel focusable to receive key events
     }
 
     public void startGameThread() { // Method to start the game thread
@@ -32,21 +43,50 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
     }
 
     @Override
-    public void run(){ // Run method for the game loop
+    public void run(){
+
+        double drawInterval = 1000000000/FPS; // Calculate the draw interval in nanoseconds
+        double delta = 0; // Variable to store the time difference
+        long lastTime = System.nanoTime(); // Get the current time in nanoseconds
+        long currentTime; // Variable to store the current time
+        long timer = 0;
+        int drawCount = 0; // Variable to count the number of frames drawn
 
         while (gameThread != null){ // While the game thread is not null
 
+            currentTime = System.nanoTime(); // Get the current time in nanoseconds
 
-            System.out.println("Game is running");// Print a message to indicate that the game is running
+            delta += (currentTime - lastTime) / drawInterval; // Calculate the time difference
+            timer += (currentTime - lastTime); // Update the timer
+            lastTime = currentTime; // Update the last time
 
-            // Update info such as character position
-            update();
-
-            // Draw the screen with the updated information
-            repaint();
+            if (delta >= 1) { // If the time difference is greater than or equal to 1
+                update();
+                repaint(); // Call the update and repaint methods
+                delta--; // Decrease the delta value
+                drawCount++; // Increment the draw count
+            }
+            if (timer >= 1000000000) { // If the timer is greater than or equal to 1 second
+                System.out.println("FPS: " + drawCount); // Print the frames per second
+                drawCount = 0; // Reset the draw count
+                timer = 0; // Reset the timer
+            }
         }
     }
     public void update() {// Method to update the game state
+
+        if (KeyH.upPressed) { // If the up key is pressed
+            playerY -= playerSpeed; // Move the player up by the specified speed
+        }
+        else if (KeyH.downPressed) { // If the down key is pressed)
+            playerY += playerSpeed; // Move the player down by the specified speed
+        }
+        else if (KeyH.leftPressed) { // If the left key is pressed
+            playerX += playerSpeed; // Move the player left by the specified speed
+        }
+        else if (KeyH.rightPressed) { // If the right key is pressed
+            playerX -= playerSpeed; // Move the player right by the specified speed
+        }
 
     }
 
@@ -58,7 +98,7 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
 
         g2.setColor(Color.white); // Set the color to white
 
-        g2.fillRect(100, 100, tileSize, tileSize); // Draw a rectangle at the specified position with the specified size
+        g2.fillRect(playerX, playerY, tileSize, tileSize); // Draw a rectangle at the specified position with the specified size
 
         g2.dispose();
 
