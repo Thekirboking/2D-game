@@ -56,6 +56,12 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
 
         Graphics2D g2 = (Graphics2D)g; // Cast the Graphics object to Graphics2D for advanced rendering
 
+        g2.setColor(Color.white); // Set the color to white
+
+        g2.fillRect(100, 100, tileSize, tileSize); // Draw a rectangle at the specified position with the specified size
+
+        g2.dispose();
+
     }
 
 }
