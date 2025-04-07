@@ -1,5 +1,7 @@
 package Main.java;
 
+import entity.Player;
+
 import javax.swing.JPanel; // Import the Swing library for GUI components
 import java.awt.*; // Import the AWT library for graphics and layout management
 
@@ -9,7 +11,7 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
     final int originalTileSize = 16; // Original tile size in pixels
     final int scale = 3; // how much the character needs to be scale bc 16 by 16 is too small
 
-    final int tileSize = originalTileSize * scale; // Final tile size after scaling
+    public int tileSize = originalTileSize * scale; // Final tile size after scaling
     final int maxScreenCol = 16; // Maximum number of columns on the screen
     final int maxScreenRow = 12; // Maximum number of rows on the screen
     final int screenWidth = tileSize * maxScreenCol; // Width of the screen in pixels
@@ -20,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
 
     KeyHandler KeyH = new KeyHandler(); // Create an instance of the KeyHandler class to handle keyboard input
     Thread gameThread; // Thread for running the game loop
+    Player player = new Player(this, KeyH); // Create an instance of the Player class to represent the player character
 
     //set player's position
     int playerX = 100; // Player's initial X position
@@ -75,18 +78,7 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
     }
     public void update() {// Method to update the game state
 
-        if (KeyH.upPressed) { // If the up key is pressed
-            playerY -= playerSpeed; // Move the player up by the specified speed
-        }
-        else if (KeyH.downPressed) { // If the down key is pressed)
-            playerY += playerSpeed; // Move the player down by the specified speed
-        }
-        else if (KeyH.leftPressed) { // If the left key is pressed
-            playerX += playerSpeed; // Move the player left by the specified speed
-        }
-        else if (KeyH.rightPressed) { // If the right key is pressed
-            playerX -= playerSpeed; // Move the player right by the specified speed
-        }
+        player.update();
 
     }
 
@@ -96,9 +88,7 @@ public class GamePanel extends JPanel implements Runnable { // GamePanel class e
 
         Graphics2D g2 = (Graphics2D)g; // Cast the Graphics object to Graphics2D for advanced rendering
 
-        g2.setColor(Color.white); // Set the color to white
-
-        g2.fillRect(playerX, playerY, tileSize, tileSize); // Draw a rectangle at the specified position with the specified size
+        player.draw(g2); // Call the draw method of the player to render the player character
 
         g2.dispose();
 
